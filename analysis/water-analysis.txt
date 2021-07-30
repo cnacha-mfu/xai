@@ -1,0 +1,1 @@
+[{"output": 1, "factor": {"phrange": [8, 9], "Hardnessrange": [2, 3], "Solidsrange": [8, 9], "Chloraminesrange": [9], "Sulfaterange": [0], "Conductivityrange": [9, 7], "Organic_carbonrange": [0, 1, 2], "Trihalomethanesrange": [8, 9, 7], "Turbidityrange": [0, 1, 2, 3, 4, 5]}}]
