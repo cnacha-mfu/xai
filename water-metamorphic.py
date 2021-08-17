@@ -54,6 +54,8 @@ result = model.predict(scaler.transform(final_df))
 print(np.argmax(result)," : ",np.max(result))
 print(np.argmin(result)," : ",np.min(result))
 
+import time
+start = time.time()
 
 factor_inc = xai.findIncreaseFactor(model,final_df, np.argmax(result), np.argmin(result), np.max(result), np.min(result),0)
 factor_dec = xai.findDecreaseFactor(model,final_df, np.argmax(result), np.argmin(result), np.max(result), np.min(result),0)
@@ -64,6 +66,9 @@ factor_dec = xai.findDecreaseFactor(model,final_df, np.argmax(result), np.argmin
 factor = xai.findFactor(factor_inc, factor_dec)
 print("valuedict: ", columns_valuesdict)
 print("factor:",factor)
+
+end = time.time()
+print("Elapse-time:",end - start)
 
 factorList = [{'output':1,'factor':factor}]
 
@@ -78,7 +83,7 @@ for col in final_df.columns:
     columns_valuesdict[col] = final_df[col].value_counts().index.tolist()
 
 # generate test data
-testdata = xai.generateData(factorList, columns_valuesdict,'Potability', 50)
+testdata = xai.generateData(factorList, columns_valuesdict,'Potability', 100)
 print("================= predicting generated test data =========================")
 gen_df = pd.DataFrame.from_dict(testdata)
 gentest_y = gen_df['Potability']
@@ -86,10 +91,14 @@ gentest_df = gen_df.drop(columns=['Potability'])
 print(gentest_df)
 gendata_results = model.predict(scaler.transform(gentest_df))
 gendata_results = np.round(gendata_results)
+true_pos = 0
 for i in range(len(gendata_results)):
     print(gendata_results[i],"<==",gen_df.iloc[[i]]['Potability'].values[0])
     testdata[i]['Potability_predict'] = gendata_results[i][0].astype(int)
+    if testdata[i]['Potability_predict'] == gen_df.iloc[[i]]['Potability'].values[0]:
+        true_pos = true_pos+1
 # write generated data to files
+print(true_pos)
 gendata_file = open("analysis/water-gendata.txt", "w")
 gendata_file.write(json.dumps(testdata,default=xai.np_encoder))
 gendata_file.close()

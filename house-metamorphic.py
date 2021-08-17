@@ -89,6 +89,9 @@ scaled_data = scaler.fit_transform(final_df)
 model = keras.models.load_model("model-house.h5")
 results = model.predict(scaled_data)
 
+import time
+start = time.time()
+
 #find max min in each category
 result_dict_list = []
 for i in range(3): # loop through all 4 categories
@@ -125,6 +128,9 @@ for resdict in result_dict_list:
 print("====================================================================")
 print("factorList:",factorList)
 analysis_file.close()
+
+end = time.time()
+print("Elapse-time:",end - start)
 
 print("====================================================================")
 ## gennerate data for testing

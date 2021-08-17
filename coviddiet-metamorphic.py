@@ -67,6 +67,10 @@ model = keras.models.load_model("model-coviddiet.h5")
 results = model.predict(scaler.transform(final_df))
 #find max min in each category
 result_dict_list = []
+
+import time
+start = time.time()
+
 for i in range(categ_num): # loop through all 4 categories
     max = -np.inf; # value for maximum prediction
     min = np.inf; # value for minimum prediction
@@ -102,6 +106,9 @@ print("====================================================================")
 print("factorList:",factorList)
 analysis_file.close()
 
+end = time.time()
+print("Elapse-time:",end - start)
+
 print("====================================================================")
 
 ## gennerate data for testing
@@ -110,18 +117,22 @@ columns_valuesdict = {}
 for col in final_df.columns:
     columns_valuesdict[col] = final_df[col].value_counts().index.tolist()
 
-testdata = xai.generateData(factorList, columns_valuesdict,'Deathsrange',10)
+testdata = xai.generateData(factorList, columns_valuesdict,'Deathsrange',100)
 
 print("================= predicting generated test data =========================")
 gen_df = pd.DataFrame.from_dict(testdata)
 gentest_y = gen_df['Deathsrange']
 gentest_df = gen_df.drop(columns=['Deathsrange'])
 #print(gentest_df)
+true_pos = [0,0,0,0]
 gendata_results = model.predict(scaler.transform(gentest_df))
 for i in range(len(gendata_results)):
     print(np.argmax(gendata_results[i]),"<==",gen_df.iloc[[i]]['Deathsrange'].values[0])
     testdata[i]['Deathsrange_predict'] = np.argmax(gendata_results[i])
+    if testdata[i]['Deathsrange_predict'] == gen_df.iloc[[i]]['Deathsrange'].values[0]:
+        true_pos[gen_df.iloc[[i]]['Deathsrange'].values[0]] = true_pos[gen_df.iloc[[i]]['Deathsrange'].values[0]]+1
 # write generated data to files
+print(true_pos)
 gendata_file = open("analysis/coviddiet-gendata.txt", "w")
 gendata_file.write(json.dumps(testdata,default=xai.np_encoder))
 gendata_file.close()

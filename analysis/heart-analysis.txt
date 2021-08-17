@@ -1,1 +1,1 @@
-{"output": 1, "factor": {"sex": [], "cp": [], "fbs": [], "restecg": [], "exang": [], "slope": [], "ca": [], "thal": [], "agerange": [], "bpsrange": [], "cholrange": [], "thalachrange": [], "oldpeakrange": []}}
+[{"output": 1, "factor": {"sex": [0], "cp": [2, 3], "fbs": [0], "restecg": [0, 1, 2], "exang": [0], "slope": [2], "ca": [0], "thal": [0, 1, 2], "agerange": [], "bpsrange": [0, 1, 2, 3], "cholrange": [3, 4], "thalachrange": [8, 9], "oldpeakrange": [0]}}]

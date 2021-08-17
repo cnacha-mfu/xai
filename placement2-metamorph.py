@@ -101,6 +101,9 @@ model = keras.models.load_model("model-placement.h5")
 results = model.predict(scaler.transform(final_df))
 
 
+import time
+
+start = time.time()
 
 #find max min in each category
 result_dict_list = []
@@ -135,6 +138,10 @@ for resdict in result_dict_list:
     analysis_file.write(json.dumps({'output':resdict['catg'],'factor':factor},default=xai.np_encoder)+"\n")
     factorList.append({'output':resdict['catg'],'factor':factor})
 
+end = time.time()
+print("Elapse-time:",end - start)
+
+
 print("====================================================================")
 print("factorList:",factorList)
 analysis_file.close()
@@ -147,7 +154,7 @@ columns_valuesdict = {}
 for col in final_df.columns:
     columns_valuesdict[col] = final_df[col].value_counts().index.tolist()
 
-testdata = xai.generateData(factorList, columns_valuesdict,'salarylevel',10)
+testdata = xai.generateData(factorList, columns_valuesdict,'salarylevel',100)
 
 print("================= predicting generated test data =========================")
 gen_df = pd.DataFrame.from_dict(testdata)
@@ -155,9 +162,14 @@ gentest_y = gen_df['salarylevel']
 gentest_df = gen_df.drop(columns=['salarylevel'])
 #print(gentest_df)
 gendata_results = model.predict(scaler.transform(gentest_df))
+true_pos = [0,0,0,0,0]
 for i in range(len(gendata_results)):
     print(np.argmax(gendata_results[i]),"<==",gen_df.iloc[[i]]['salarylevel'].values[0])
     testdata[i]['salarylevel_predict'] = np.argmax(gendata_results[i])
+    if testdata[i]['salarylevel_predict'] == gen_df.iloc[[i]]['salarylevel'].values[0]:
+        true_pos[gen_df.iloc[[i]]['salarylevel'].values[0]] = true_pos[gen_df.iloc[[i]]['salarylevel'].values[0]]+1
+
+print(true_pos)
 # write generated data to files
 gendata_file = open("analysis/placement-gendata.txt", "w")
 gendata_file.write(json.dumps(testdata,default=xai.np_encoder))
