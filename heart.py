@@ -22,7 +22,7 @@ df.insert(len(df.columns),'bpsrange',bpsrange)
 
 #cholrange = pd.cut(df.chol,bins=[-np.inf,126,170,214,258,302,345,389,433,np.inf],labels=[0,1,2,3,4,5,6,7,8],include_lowest =True)
 cholrange = pd.qcut(df.chol,q=10)
-df.insert(len(df.columns),'cholrange',bpsrange)
+df.insert(len(df.columns),'cholrange',cholrange)
 
 #thalachrange = pd.cut(df.thalach,bins=[-np.inf,71,84,97,110,124,137,150,163,176,189,np.inf],labels=[0,1,2,3,4,5,6,7,8,9,10],include_lowest =True)
 thalachrange = pd.qcut(df.thalach,q=10)

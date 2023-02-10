@@ -1,0 +1,5 @@
+{"output": 0, "factor": {"age": [], "sex": [], "bmi": [], "steps": [], "children": [], "smoker": []}}
+{"output": 1, "factor": {"age": [0], "sex": [], "bmi": [1], "steps": [9], "children": [0], "smoker": []}}
+{"output": 2, "factor": {"age": [], "sex": [0], "bmi": [0], "steps": [], "children": [2, 3], "smoker": []}}
+{"output": 3, "factor": {"age": [], "sex": [], "bmi": [], "steps": [], "children": [1, 2, 3, 4, 5], "smoker": []}}
+{"output": 4, "factor": {"age": [6, 7], "sex": [], "bmi": [8, 9], "steps": [0], "children": [], "smoker": [1]}}

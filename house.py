@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+# import matplotlib.pyplot as plt
+# import seaborn as sns
 import json
 import xai
 
 #https://www.kaggle.com/camnugent/california-housing-prices
-#accuracy [0.6699084043502808, 0.7100290656089783]
+#accuracy [0.6699084043502808, 0.7100290656089783,0.7093023061752319]
 
 df=pd.read_csv("../dataset/housing.csv")
 df.head()
